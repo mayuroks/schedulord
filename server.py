@@ -44,15 +44,15 @@ def create():
     return "function submitted", 201
 
 
-@app.route('/edit/<id>')
-def edit():
+@app.route('/edit/<id>', methods=['POST'])
+def edit(id):
     '''
     Edit existing job
     '''
     pass
 
 
-@app.route('/delete/<id>')
+@app.route('/delete/<id>', methods=['POST'])
 def delete():
     '''
     POST
@@ -62,7 +62,7 @@ def delete():
 
 
 @app.route('/<id>')
-def show():
+def show(id):
     '''
     GET
     get a job with job id
