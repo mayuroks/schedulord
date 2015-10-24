@@ -1,10 +1,11 @@
-from requests import get,post,patch
+from requests import get, post, patch
 import cPickle
 import json
-from datetime import datetime,timedelta
+from datetime import datetime, timedelta
 from time import sleep
 
 headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
+
 
 def json_to_pickle(job):
     job['func'] = cPickle.loads(str(job['func']))
@@ -15,7 +16,7 @@ def get_all_jobs():
     # contents of res its all json
     res = get('http://127.0.0.1:5000/api/jobs')
     # need to convert the function to python object
-    return map(json_to_pickle,res.json()['objects'])
+    return map(json_to_pickle, res.json()['objects'])
 
 
 while True:
@@ -25,7 +26,8 @@ while True:
     # all_jobs_dict is prepared
     for job in all_jobs:
         if job['next_runtime'] is not None:
-            job['next_runtime'] = datetime.strptime(job['next_runtime'], "%Y-%m-%d %H:%M:%S.%f")
+            job['next_runtime'] = datetime.strptime(
+                job['next_runtime'], "%Y-%m-%d %H:%M:%S.%f")
         all_jobs_dict[job['name']] = job
 
     # print "[worker] all jobs dict", all_jobs_dict
@@ -52,11 +54,9 @@ while True:
                 # update job details
                 all_jobs_dict[job_name] = job
                 updated_jobs.append(job)
-        
+
         # print "Updated jobs", updated_jobs_json
         # print "[worker] All jobs dict", all_jobs_dict
-        
-
 
         # print "[worker] All jobs dict", all_jobs_dict
         time_diff = []
@@ -66,12 +66,11 @@ while True:
         for job in updated_jobs:
             job['func'] = cPickle.dumps(job['func'])
             job['next_runtime'] = str(job['next_runtime'])
-            url='http://127.0.0.1:5000/api/jobs/' + str(job['id'])
+            url = 'http://127.0.0.1:5000/api/jobs/' + str(job['id'])
             res = patch(url=url, data=json.dumps(job), headers=headers)
             print "[worker] Updated jobs. Response code ", res.status_code
-        
-        # patch('http://127.0.0.1:5000/api/jobs', data=json.dumps(updated_jobs_json), headers=headers)
 
+        # patch('http://127.0.0.1:5000/api/jobs', data=json.dumps(updated_jobs_json), headers=headers)
 
         # Just enuf sleep time to run nearest job
         SLEEP_TIME = min(time_diff).seconds
