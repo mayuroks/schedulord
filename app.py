@@ -15,11 +15,15 @@ class Job(db.Model):
     name = db.Column(db.Text)
     interval = db.Column(db.Integer)
     func = db.Column(db.LargeBinary)
+    next_runtime = db.Column(db.DateTime)
 
 
-db.create_all()
+
 manager = APIManager(app, flask_sqlalchemy_db=db)
 
-manager.create_api(Job, methods=['GET', 'POST', 'DELETE', 'PATCH'], url_prefix="/api", collection_name="jobs")
+manager.create_api(Job, methods=['GET', 'POST', 'DELETE', 'PATCH'], url_prefix="/api", collection_name="jobs", allow_patch_many=True)
 
-app.run()
+if __name__ == "__main__":
+    db.drop_all()
+    db.create_all()
+    app.run()
