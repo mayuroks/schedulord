@@ -11,8 +11,6 @@ from datetime import datetime
 HEADERS = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
 # Simple job functions
-
-
 def say_hello():
     print "##### Hello ##### ", datetime.strftime(datetime.now(), "%T")
 
