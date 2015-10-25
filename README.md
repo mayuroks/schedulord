@@ -1,4 +1,4 @@
-# schedulord
+# schedulord (Work in Progress)
 Scheduler as a service. Built using Python.
 
 # Installation
