@@ -58,3 +58,6 @@ res = delete("http://127.0.0.1:5000/api/jobs/1",headers=HEADERS)
 - Interval can only be specified in seconds. Hours,minutes, days are not handled.
 
 - BUGS might show up.
+
+# LICENSE
+MIT

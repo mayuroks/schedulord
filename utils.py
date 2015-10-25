@@ -21,7 +21,7 @@ def function_sender(func=None, interval=None):
         data = {
                 'func': cPickle.dumps(func),
                 'name': func.func_name,
-                'interval': 7,
+                'interval': interval,
                 }
         
         res = post("http://127.0.0.1:5000/api/jobs",
