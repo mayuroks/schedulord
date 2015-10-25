@@ -11,7 +11,7 @@
 import cPickle
 from datetime import datetime, timedelta
 from time import sleep
-from app import Job, db
+from server import Job, db
 
 while True:
     ALL_JOBS = Job.query.all()
