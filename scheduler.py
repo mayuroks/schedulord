@@ -2,16 +2,22 @@
     Flow of things
     --------------
     1) Get all jobs
-    2) Unpickle the func
-    3) Execute
-    4) schedule next_runtime
-    5) REPEAT
+    2) Execute the script
+    3) schedule next_runtime
+    4) REPEAT
 '''
 
-import cPickle
 from datetime import datetime, timedelta
 from time import sleep
 from server import Job, db
+from importlib import import_module
+from site import addsitedir
+from server import app
+
+# adding script folder to site path
+# enables us to import modules from 
+# our upload path
+addsitedir(app.config.get('UPLOAD_FOLDER'))
 
 while True:
     ALL_JOBS = Job.query.all()
@@ -27,9 +33,9 @@ while True:
             elif job.next_runtime < datetime.now():
                 print "[worker] executing job", job.name
 
-                # Unpickle func b4 calling it
-                job_func = cPickle.loads(str(job.func))
-                job_func.__call__()
+                # Get script + execute it
+                job_script = import_module(job.script_name)
+                job_script.main()
                 job.next_runtime = datetime.now() + \
                     timedelta(seconds=job.interval)
 
