@@ -1,31 +1,22 @@
 '''
 Make life easier with util funcs
 '''
-import jsonpickle
 from requests import post, delete
-import cPickle
-from datetime import datetime
 
-HEADERS = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
-def function_sender(func=None, interval=None):
+def task_sender(name=None, file_path=None, interval=None):
     '''
-        :func => function to be scheulded
+        :name => name of task
+        :file_path => '/path/to/your_script.py'
         :interval => time interval in seconds
         returns job id
     '''
 
-    if func == None or interval == None:
-        print "Currect Usage\nfunction_sender(func=hello_world, interval=10)"
+    if not all([name,file_path,interval]):
+        print "Currect Usage:\nfunction_sender(name='my_task',file_path='/path/to/hello.py', interval=10)"
     else:
-        data = {
-                'func': cPickle.dumps(func),
-                'name': func.func_name,
-                'interval': interval,
-                }
-        
-        res = post("http://127.0.0.1:5000/api/jobs",
-                data=jsonpickle.encode(data),
-                headers=HEADERS
-                )
-        print res.json()
+        files = {'file': open(file_path, 'rb')}
+        job_data = dict(name=name, interval=interval)
+        url = "http://127.0.0.1:5000/jobs/create"
+        res = post(url=url, data=job_data, files=files)
+        print res.text
