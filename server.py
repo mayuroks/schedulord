@@ -8,7 +8,7 @@ import os
 app = Flask(__name__)
 app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/schedulord.db'
-app.config['UPLOAD_FOLDER'] = os.path.join(os.path.abspath('.'), 'scripts')
+app.config['UPLOAD_FOLDER'] = os.path.join(os.path.abspath('.'), 'uploads')
 db = SQLAlchemy(app)
 
 
@@ -56,7 +56,11 @@ def read(id):
 
 @app.route('/jobs/<id>', methods=['DELETE'])
 def delete(id):
-    return "deletemethod"
+    job = Job.query.get(id)
+    job_name = job.name
+    job.query.delete()
+    db.session.commit()
+    return "job {} has been deleted".format(job_name)
 
 
 if __name__ == "__main__":
