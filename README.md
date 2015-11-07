@@ -12,6 +12,11 @@ KK then lets copy paste below examples to get started.
 # Installation:
 There is no package available in pypi as of yet.
 ```
+$ # Make a virtual env 
+$ mkvirtualenv testing
+$ workon testing
+
+
 $ git clone https://github.com/mayuroks/schedulord
 $ cd schedulord
 $ pip install -r requirements.txt
