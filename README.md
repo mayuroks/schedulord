@@ -1,7 +1,9 @@
 # schedulord (Scheduler as a Service.)
 **DISCLAIMER:** This is **just an implementation of a concept** not a product ready package.
 
-Scheduler as a service over REST API. Basic workflow implemented here is as below
+Scheduler as a service over REST API.I have written a [blog post](http://mayurrokade.com/blog/scheduler-as-a-service/) which explains the idea behind scheduler as a service.
+
+Basic workflow implemented here is as below
 - write a job in python file
 - send it to server
 - scheduler takes care of the REST
